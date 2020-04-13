@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Snow animation</title>
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Pompiere'>
+    </head>
+    <body>
+       <h1>가율회계법인<br>천안지점</h1>
+        <canvas></canvas>
+        <a href='https://www.sololearn.com/Profile/7110345/?ref=app'>&lt;created by=" <span>Rull Deef</span> "/&gt;</a>
+    </body>
+    
+    <script>
+    var W, H, ctx;
+var snowBalls = [], fallAngle = Math.PI/3;
+
+window.onload = function() {
+  var canvas = document.querySelector('canvas');
+  document.body.onresize = function() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    ctx = canvas.getContext('2d');
+  }
+  document.body.onresize();
+  
+  for(var i = 0; i < 300; i++) {
+    var x = W * Math.random();
+    var y = H * Math.random();
+    var r = 1 + 2 * Math.random();
+    var v = H/4 + H/6*Math.random();
+    var a = fallAngle+Math.PI/6*(Math.random()-0.5);
+    var vx = v*Math.cos(a), vy = v*Math.sin(a);
+    
+    snowBalls.push({x:x, y:y, r:r, vx:vx, vy:vy});
+  }
+  
+  animate();
+}
+
+function animate() {
+  ctx.fillStyle = 'rgba(200, 200, 200, 0.7)';
+  ctx.fillRect(0, 0, W, H);
+  
+  ctx.fillStyle = 'white';
+  snowBalls.map(updateSnowBall);
+  snowBalls.map(drawSnowBall);
+  
+  window.requestAnimationFrame(animate);
+}
+
+function updateSnowBall(s) {
+  if(s.x < 0) s.x += W; if(s.x > W) s.x -= W;
+  if(s.y < 0) s.y += H; if(s.y > H) s.y -= H;
+  s.x += s.vx/60; s.y += s.vy/60;
+}
+
+function drawSnowBall(s) {
+  ctx.beginPath();
+  ctx.arc(s.x, s.y, s.r, 0, 2*Math.PI);
+  ctx.fill();
+}
+    </script>
+</html>
